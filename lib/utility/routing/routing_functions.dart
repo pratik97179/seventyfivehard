@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:seventyfivehard/ui/authentication/auth.dart';
+import 'package:seventyfivehard/utility/routing/named_routes.dart';
 
 /// Class that contains string constants for all routes used in the app
 class RoutingFunctions {
@@ -10,7 +12,9 @@ class RoutingFunctions {
     Widget? target;
 
     switch (routeUri.path) {
-      
+      case NamedRoutes.authenticationRoute:
+        target = Authentication();
+        break;
     }
 
     if (target != null) {

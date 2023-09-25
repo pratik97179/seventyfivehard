@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seventyfivehard/ui/authentication/auth.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,9 +14,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: '75 Hard',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
       ),
-      home: Container(),
+      home: Authentication(),
     );
   }
 }
