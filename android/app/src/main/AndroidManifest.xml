@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.seventyfivehard">
+    package="com.seventyfivehard.flutterApp">
    <application
         android:label="seventyfivehard"
         android:name="${applicationName}"
