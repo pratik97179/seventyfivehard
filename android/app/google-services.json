@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "282227966292",
+    "project_id": "seventfivehard",
+    "storage_bucket": "seventfivehard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282227966292:android:77f7e10d941916b05448c1",
+        "android_client_info": {
+          "package_name": "com.seventyfivehard.flutterApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBluDAk1l9bLpax1LO2VCqqYYBrjiQAR7c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
