@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:seventyfivehard/models/user.dart';
 import 'package:seventyfivehard/services/database.dart';
 import 'package:seventyfivehard/utility/shared_preferences/shared_preferences_helper.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthProvider with ChangeNotifier {
   String? _userId;
@@ -69,6 +70,21 @@ class AuthProvider with ChangeNotifier {
       print(e);
     }
     return false;
+  }
+
+  /// Triggers Apple authentication flow
+  Future<void> appleLogin() async {
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    ).onError((error, stackTrace) {
+      throw Exception('$error');
+    });
+
+    print(
+        "Apple credential ===>\nEmail - ${credential.email}\nid_Token - ${credential.identityToken}\nAuthorization code - ${credential.authorizationCode}\nUser identifier - ${credential.userIdentifier}");
   }
 
   /// Save the [_userId] after authentication in [SharedPreferences]

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:seventyfivehard/state/auth_provider.dart';
-import 'package:seventyfivehard/utility/colors_constant.dart';
+import 'package:seventyfivehard/ui/components/social_login_button.dart';
 import 'package:seventyfivehard/utility/image_path_constant.dart';
 import 'package:sizer/sizer.dart';
 
@@ -29,35 +28,14 @@ class Authentication extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 3.h),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
+                SocialLoginButton(
+                  buttonIcon: ImagePathConstant.googleIcon,
                   onTap: () => provider.googleLogIn(),
-                  child: Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: ColorsConstant.greyBorderColor,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        SvgPicture.asset(
-                          ImagePathConstant.googleIcon,
-                        ),
-                        SizedBox(width: 10.w),
-                        Text(
-                          'Sign in with Google',
-                          style: TextStyle(
-                            fontSize: 11.5.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
+                ),
+                    // SocialLoginButton(
+                    //   buttonIcon: ImagePathConstant.appleIcon,
+                    //   onTap: () => provider.appleLogin(),
+                    // ),
               ],
             ),
           );
