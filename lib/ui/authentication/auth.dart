@@ -22,7 +22,7 @@ class Authentication extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  '75Hard',
+                  '75 Hard',
                   style: TextStyle(
                     fontSize: 35.sp,
                     fontWeight: FontWeight.w700,
@@ -31,7 +31,7 @@ class Authentication extends StatelessWidget {
                 SizedBox(height: 3.h),
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onTap: () => provider.googleLogIn(context),
+                  onTap: () => provider.googleLogIn(),
                   child: Container(
                     padding:
                         EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
