@@ -1,3 +1,4 @@
 class SharedKeys {
-  static const String userId = "userId";
+  static const String userId = "user-id";
+  static const String userDetails = "user-details";
 }

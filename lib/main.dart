@@ -3,7 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:seventyfivehard/state/auth_provider.dart';
+import 'package:seventyfivehard/state/home_provider.dart';
 import 'package:seventyfivehard/ui/authentication/auth.dart';
+import 'package:seventyfivehard/ui/home/home.dart';
 import 'package:sizer/sizer.dart';
 
 void main() async {
@@ -22,6 +24,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => AuthProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => HomeProvider(),
+        )
       ],
       builder: (context, child) {
         return Sizer(
@@ -41,23 +46,7 @@ class MyApp extends StatelessWidget {
                       : snapshot.connectionState == ConnectionState.active
                           ? snapshot.data == null
                               ? Authentication()
-                              : Scaffold(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 223, 223, 223),
-                                  body: GestureDetector(
-                                    behavior: HitTestBehavior.opaque,
-                                    onTap: () =>
-                                        FirebaseAuth.instance.signOut(),
-                                    child: Center(
-                                      child: Text(
-                                        'Logout',
-                                        style: TextStyle(
-                                          fontSize: 40.sp,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
+                              : Home()
                           : CircularProgressIndicator();
                 },
               ),

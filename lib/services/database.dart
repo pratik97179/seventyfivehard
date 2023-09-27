@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:seventyfivehard/models/challenge_model.dart';
 import 'package:seventyfivehard/utility/shared_preferences/shared_preferences_helper.dart';
 
 class DatabaseService {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
+  final CollectionReference challengeCollection =
+      FirebaseFirestore.instance.collection('challenges');
 
   /// Set the user data to the [FirebaseFirestore] as a new entry
   Future<void> setUserData({
@@ -23,29 +26,19 @@ class DatabaseService {
         );
   }
 
-  /// Check if a document with this userId exists or not.
-  /// Returns [true] if the document exists, otherwise returns [false]
-  Future<bool> checkUserExists({required String uid}) {
-    return userCollection
-        .doc(uid)
+  Future<List<ChallengeModel>> getChallengeList(String userId) async {
+    QuerySnapshot querySnapshot = await challengeCollection
+        .where('challengeCreatorId', isEqualTo: userId)
         .get()
-        .then((value) => value.exists ? true : false)
         .onError(
-          (error, stackTrace) => throw Exception(error),
-        );
+      (error, stackTrace) {
+        throw Exception(error);
+      },
+    );
+    return querySnapshot.docs
+        .map((docData) => ChallengeModel.fromSnapshot(docData))
+        .toList();
   }
-
-  // /// Fetch the salon list from [FirebaseFirestore]
-  // Future<List<SalonData>> getSalonList() async {
-  //   QuerySnapshot querySnapshot = await salonCollection.get().onError(
-  //     (error, stackTrace) {
-  //       throw Exception(error);
-  //     },
-  //   );
-  //   return querySnapshot.docs
-  //       .map((docData) => SalonData.fromDocumentSnapshot(docData))
-  //       .toList();
-  // }
 
   // Future<SalonData> getSalonData(String salonId) async {
   //   QuerySnapshot querySnapshot =

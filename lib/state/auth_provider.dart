@@ -1,53 +1,61 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:seventyfivehard/models/user.dart';
+import 'package:seventyfivehard/models/user_model.dart';
 import 'package:seventyfivehard/services/database.dart';
 import 'package:seventyfivehard/utility/shared_preferences/shared_preferences_helper.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthProvider with ChangeNotifier {
-  String? _userId;
-
-  String? get userId => _userId;
-
   /// Triggers Google authentication flow
   Future<void> googleLogIn() async {
     await GoogleSignIn().signOut();
     await FirebaseAuth.instance.signOut();
-    final GoogleSignInAccount? googleUser = GoogleSignIn().currentUser ??
-        await GoogleSignIn(scopes: <String>['email'])
-            .signIn()
-            .onError((error, stackTrace) {
-          throw Exception(error);
-        });
 
-    if (googleUser == null) {
-      return;
-    }
+    try {
+      final GoogleSignInAccount? googleUser = GoogleSignIn().currentUser ??
+          await GoogleSignIn(scopes: <String>['email'])
+              .signIn()
+              .onError((error, stackTrace) {
+            throw Exception(error);
+          });
 
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
+      if (googleUser == null) {
+        return;
+      }
 
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
-    User? user = (await FirebaseAuth.instance
-            .signInWithCredential(credential)
-            .onError((error, stackTrace) {
-      throw Exception(error);
-    }))
-        .user;
-    setUserId(userId: user!.uid);
-    storeUserDataInCollection(
-      userData: UserModel(
-        name: user.displayName,
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      User? user = (await FirebaseAuth.instance
+              .signInWithCredential(credential)
+              .onError((error, stackTrace) {
+        throw Exception(error);
+      }))
+          .user;
+
+      UserModel userDetails = UserModel(
+        name: user!.displayName,
         gmailId: user.email,
-      ),
-      docId: user.uid,
-    );
+      );
+
+      setUserData(
+        userDetails: userDetails,
+        userId: user.uid,
+      );
+
+      storeUserDataInCollection(
+        userData: userDetails,
+        docId: user.uid,
+      );
+    } catch (e) {
+      print(e);
+    }
     notifyListeners();
   }
 
@@ -87,10 +95,13 @@ class AuthProvider with ChangeNotifier {
         "Apple credential ===>\nEmail - ${credential.email}\nid_Token - ${credential.identityToken}\nAuthorization code - ${credential.authorizationCode}\nUser identifier - ${credential.userIdentifier}");
   }
 
-  /// Save the [_userId] after authentication in [SharedPreferences]
+  /// Cache the user details after authentication in [SharedPreferences]
   /// and in [AuthProvider]
-  void setUserId({required String? userId}) async {
-    _userId = userId;
-    await SharedPreferenceHelper.setUserId(userId ?? '');
+  void setUserData({
+    required UserModel userDetails,
+    required String userId,
+  }) async {
+    await SharedPreferenceHelper.setUserId(userId);
+    await SharedPreferenceHelper.setUserDetails(userDetails);
   }
 }

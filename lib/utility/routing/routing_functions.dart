@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seventyfivehard/ui/authentication/auth.dart';
+import 'package:seventyfivehard/ui/home/home.dart';
 import 'package:seventyfivehard/utility/routing/named_routes.dart';
 
 /// Class that contains string constants for all routes used in the app
@@ -14,6 +15,9 @@ class RoutingFunctions {
     switch (routeUri.path) {
       case NamedRoutes.authenticationRoute:
         target = Authentication();
+        break;
+      case NamedRoutes.homeRoute:
+        target = Home();
         break;
     }
 
